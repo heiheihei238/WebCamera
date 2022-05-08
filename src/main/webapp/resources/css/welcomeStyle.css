@@ -1,0 +1,208 @@
+@import url("https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800,900&display=swap");
+
+*{
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+}
+
+body{
+    width: 100vw;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #161626;
+}
+
+.container{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container .card{
+    position: relative;
+    width: 50vw;
+    height: 60vh;
+    background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.5), rgba(255,255,255,0.1));
+                                        /*rgba(255,255,255,0.1) 65%, rgba(255,255,255,0.5), rgba(255,255,255,0.1) 75%);*/
+    margin: 30px;
+    border-radius: 15px;
+    box-shadow: 20px 20px 50px rgba(0,0,0,0.5);
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-top: 1px solid rgba(255,255,255,0.5);
+    border-left: 1px solid rgba(255,255,255,0.5);
+    backdrop-filter: blur(5px);
+    z-index: 5;
+}
+
+.container .card .frontCard{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: transparent;
+}
+
+.container .card .frontCard i{
+    background: linear-gradient(135deg, #C973FF, #AEBAF8);
+    box-shadow: rgb(173, 173, 173) 1px 1px 1px,
+                rgb(0,0,0,0.5) -3px -3px 1px;
+    -webkit-background-clip: text;
+    color: transparent;
+    padding: 10px 20px 10px 20px;
+    border-radius: 15px;
+}
+
+.container .card .frontCard h1{
+    margin-top: 10%;
+    text-align: center;
+    font-weight: bolder;
+    font-size: 50px;
+    background: linear-gradient(90deg, #EF33B1, #F6E6BC);
+    -webkit-background-clip: text;
+    color: transparent;
+}
+
+.container .card .backCard{
+    position: absolute;
+    display: flex;
+    transform-style: preserve-3d;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    /*transform: translateY(110px);*/
+    backface-visibility: hidden;
+    transform: translateY(300px);
+    opacity: 0;
+    transition: all 1.5s ease;
+    background: transparent;
+}
+
+.container .card .backCard .intro{
+    font-size: 40px;
+    font-weight: bolder;
+    color: white;
+    text-shadow: rgb(173, 173, 173) 1px 1px 1px,
+                 rgb(0,0,0,0.5) -3px -3px 1px;
+}
+
+.container .card .backCard .introduction{
+    margin-top: 20px;
+    width: 80%;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.container .card .backCard a{
+    margin-top: 30px;
+    overflow: hidden;
+    position: relative;
+    padding: 10px 20px;
+    color: white;
+    font-weight: bolder;
+    text-decoration: none;
+    transition: all 0.5s
+}
+
+.container .card .backCard a:hover {
+    color: #fff;
+    border-radius: 5px;
+    background-color: #C973FF;
+    box-shadow: 0 0 5px #C973FF,
+                0 0 25px #C973FF,
+                0 0 50px #C973FF,
+                0 0 100px #C973FF;
+}
+
+.container .card .backCard a span {
+    position: absolute;
+}
+
+.container .card .backCard a span:first-child {
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(to right, transparent, #C973FF);
+    animation: move1 1s linear infinite;
+}
+
+.container .card .backCard a span:nth-child(2) {
+    right: 0;
+    top: -100%;
+    width: 2px;
+    height: 100%;
+    background: linear-gradient(transparent, #C973FF);
+    animation: move2 1s linear 0.25s infinite;
+}
+
+.container .card .backCard a span:nth-child(3) {
+    right: -100%;
+    bottom: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(to left, transparent, #C973FF);
+    animation: move3 1s linear 0.5s infinite;
+}
+
+.container .card .backCard a span:last-child {
+    left: 0;
+    bottom: -100%;
+    width: 2px;
+    height: 100%;
+    background: linear-gradient(#C973FF, transparent);
+    animation: move4 1s linear 0.75s infinite;
+}
+
+.container .card:hover .backCard{
+    opacity: 1;
+    transform: translateY(0px);
+}
+
+.container .card:hover .frontCard{
+    opacity: 0;
+    transform: translateY(300px);
+}
+
+@keyframes move1 {
+    0% {
+        left: -100%;
+    }
+    50%,
+    100% {
+        left: 100%;
+    }
+}
+@keyframes move2 {
+    0% {
+        top: -100%;
+    }
+    50%,
+    100% {
+        top: 100%;
+    }
+}
+@keyframes move3 {
+    0% {
+        right: -100%;
+    }
+    50%,
+    100% {
+        right: 100%;
+    }
+}
+@keyframes move4 {
+    0% {
+        bottom: -100%;
+    }
+    50%,
+    100% {
+        bottom: 100%;
+    }
+}

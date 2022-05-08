@@ -1,0 +1,71 @@
+.navbar {
+    height: 40px;
+    text-align: center;
+    background: linear-gradient(90deg, #0C7BB3, #F2BAE8 50%);
+    box-shadow: 0px 0px 10px #000;
+}
+.navbar ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+/* 选中navbar下的所有li 即选择了一二级菜单 此时设置样式一二级菜单都改变*/
+.navbar ul li {
+    float: left;
+    width: 100px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    font-size: 15px;
+    font-weight: bold;
+    background: transparent;
+    cursor: pointer;
+
+}
+.navbar ul li:hover {
+    background-color: #6dd47d;
+    /*border: 1px solid black;*/
+    animation: changeColor 2s infinite;
+    animation-delay: 1s;
+    z-index: 1000;
+}
+@keyframes changeColor {
+    0% {
+        color: #6dd47d;
+    }
+    50% {
+        color: #FF00FF;
+    }
+    100% {
+        color: #6dd47d;
+    }
+}
+.navbar ul li a {
+    text-decoration: none;
+    color: #201e1e;
+    display: block;
+    text-align: center;
+    line-height: 40px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+/* 选中二级菜单下的li 此时设置样式不会影响一级菜单*/
+.navbar ul li ul li{
+    display: none;
+    width: 180px;
+    height: 40px;
+    float: initial;
+    background: papayawhip;
+    transition: 0.3s;
+    z-index: 1000;
+    /*border: black solid 1px;*/
+}
+.navbar ul li:hover ul li {
+    display: block;
+    z-index: 1000;
+    /*border-top: 1px solid #000;*/
+}
+
+.check{
+    background: rgba(217,101,208,0.94);
+}
