@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>camera</title>
+  <!--    <iframe sandbox="allow-forms allow-same-origin allow-scripts"></iframe>-->
+  <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  <link rel="stylesheet" type="text/css" href="/css/navigationStyle.css">
+  <link rel="stylesheet" type="text/css" href="/css/videoStyle.css">
+  <link rel="stylesheet" type="text/css" href="/css/editStyle.css">
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+</head>
+<body style="font-family: sans-serif;">
+<div class="header">
+  <div class="navbar">
+    <ul>
+      <li><a href="home.html">Home</a></li>
+      <li id="videoNav"><a>Video</a>
+        <ul>
+          <li><a href="camera.html">camera</a></li>
+          <li><a href="screen.html">record</a></li>
+        </ul>
+      </li>
+      <li id="edit"><a>Editing</a>
+        <ul>
+          <li><a href="mainEdit.html">mainEdit</a></li>
+          <li><a href="photo.html">photo</a></li>
+        </ul>
+      </li>
+      <li id="upload"><a href="upload.html">Upload</a></li>
+      <li id="about"><a href="aboutUs.html">About us</a>
+      </li>
+    </ul>
+  </div>
+</div>
+<div class="container">
+  <h1>Upload</h1>
+  <video id="video1" autoplay="autoplay" controls></video>
+  <div class="control">
+    <a href="javascript:;" class="file2">
+      <label for="file">
+        <i class="fa fa-file" aria-hidden="true"></i>
+        choose file
+      </label>
+    </a>
+
+    <a href="javascript:;" class="file2">
+      <label for="submit">
+        <i class="fa fa-upload" aria-hidden="true"></i>
+        upload
+      </label>
+    </a>
+
+    <form action="/upload" enctype="multipart/form-data"
+          method="post" style="display: none">
+      <input type="file" name="file" id="file" value="choose file" onchange="playMedia2()"/><br/>
+      <input type="submit" id="submit"/>
+    </form>
+  </div>
+</div>
+<script>
+    let myVid = document.getElementById("video1");
+    function playMedia2() {
+        //设置结束时间
+        let file = document.getElementById("file").files[0];
+        if (!file) {
+            alert("Please specify the video path");
+            return false;
+        }
+        myVid.src = (window.URL) ? window.URL.createObjectURL(file) : window.webkitURL.createObjectURL(file);
+        myVid.controls = true;
+    }
+</script>
+</body>
+</html>

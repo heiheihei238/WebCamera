@@ -1,0 +1,158 @@
+.container .card .frontCard .icons i:nth-child(1){
+    box-shadow: rgb(173, 173, 173) 1px 1px 1px,
+            rgb(0,0,0,0.5) -3px -3px 1px;
+    /*background: linear-gradient(135deg, #C973FF, #AEBAF8);*/
+    color: transparent;
+    padding: 10px 20px 10px 20px;
+    border-radius: 15px;
+    margin: 5px;
+    animation: icon1 3.5s linear infinite;
+}
+
+.container .card .frontCard .icons i:nth-child(2){
+    box-shadow: none;
+    /*background: linear-gradient(135deg, #C973FF, #AEBAF8);*/
+    color: transparent;
+    padding: 10px 20px 10px 20px;
+    border-radius: 15px;
+    margin: 5px;
+    animation: icon2 3.5s linear 0.5s infinite;
+}
+
+.container .card .frontCard .icons i:nth-child(3){
+    box-shadow: none;
+    /*background: linear-gradient(135deg, #C973FF, #AEBAF8);*/
+    color: transparent;
+    padding: 10px 20px 10px 20px;
+    border-radius: 15px;
+    margin: 5px;
+    animation: icon3 3.5s linear 1s infinite;
+}
+
+.container .card .frontCard .icons i:nth-child(4){
+    box-shadow: none;
+    /*background: linear-gradient(135deg, #C973FF, #AEBAF8);*/
+    /*-webkit-background-clip: text;*/
+    color: transparent;
+    padding: 10px 20px 10px 20px;
+    border-radius: 15px;
+    margin: 5px;
+    animation: icon4 3.5s linear 1.5s infinite;
+}
+
+.container .card .frontCard .icons i:nth-child(5){
+    box-shadow: none;
+    /*background: linear-gradient(135deg, #C973FF, #AEBAF8);*/
+    /*-webkit-background-clip: text;*/
+    color: transparent;
+    padding: 10px 20px 10px 20px;
+    border-radius: 15px;
+    margin: 5px;
+    animation: icon5 3.5s linear 2s infinite;
+}
+
+.container .card .frontCard .icons i:nth-child(6){
+    box-shadow: none;
+    /*background: linear-gradient(135deg, #C973FF, #AEBAF8);*/
+    /*-webkit-background-clip: text;*/
+    color: transparent;
+    padding: 10px 20px 10px 20px;
+    border-radius: 15px;
+    margin: 5px;
+    animation: icon6 3.5s linear 2.5s infinite;
+}
+
+.container .card .frontCard .icons i:nth-child(7){
+     box-shadow: none;
+     /*background: linear-gradient(135deg, #C973FF, #AEBAF8);*/
+     /*-webkit-background-clip: text;*/
+     color: transparent;
+     padding: 10px 20px 10px 20px;
+     border-radius: 15px;
+     margin: 5px;
+     animation: icon7 3.5s linear 3s infinite;
+}
+
+@keyframes icon1 {
+    0% {
+        color: rgba(134,13,0,0.94);
+        box-shadow: rgb(173, 173, 173) 1px 1px 1px,
+        rgb(0,0,0,0.5) -3px -3px 1px;
+    }
+    50% {
+        color: transparent;
+        box-shadow: none;
+    }
+}
+
+@keyframes icon2 {
+    0% {
+        color: rgba(134, 93, 0, 0.94);
+        box-shadow: rgb(173, 173, 173) 1px 1px 1px,
+        rgb(0, 0, 0, 0.5) -3px -3px 1px;
+    }
+    50% {
+        color: transparent;
+        box-shadow: none;
+    }
+}
+
+@keyframes icon3 {
+    0% {
+        color: rgba(124,134,0,0.94);
+        box-shadow: rgb(173, 173, 173) 1px 1px 1px,
+        rgb(0,0,0,0.5) -3px -3px 1px;
+    }
+    50% {
+        color: transparent;
+        box-shadow: none;
+    }
+}
+
+@keyframes icon4 {
+    0% {
+        color: rgba(35,134,0,0.94);
+        box-shadow: rgb(173, 173, 173) 1px 1px 1px,
+        rgb(0,0,0,0.5) -3px -3px 1px;
+    }
+    50% {
+        color: transparent;
+        box-shadow: none;
+    }
+}
+
+@keyframes icon5 {
+    0% {
+        color: rgba(0,126,134,0.94);
+        box-shadow: rgb(173, 173, 173) 1px 1px 1px,
+        rgb(0,0,0,0.5) -3px -3px 1px;
+    }
+    50% {
+        color: transparent;
+        box-shadow: none;
+    }
+}
+
+@keyframes icon6 {
+    0% {
+        color: rgba(0,28,134,0.94);
+        box-shadow: rgb(173, 173, 173) 1px 1px 1px,
+        rgb(0,0,0,0.5) -3px -3px 1px;
+    }
+    50% {
+        color: transparent;
+        box-shadow: none;
+    }
+}
+
+@keyframes icon7 {
+    0% {
+        color: rgba(83,0,134,0.94);
+        box-shadow: rgb(173, 173, 173) 1px 1px 1px,
+        rgb(0,0,0,0.5) -3px -3px 1px;
+    }
+    50% {
+        color: transparent;
+        box-shadow: none;
+    }
+}

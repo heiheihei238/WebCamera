@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Video</title>
+  <!--    <iframe sandbox="allow-forms allow-same-origin allow-scripts"></iframe>-->
+  <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  <link rel="stylesheet" type="text/css" href="/css/navigationStyle.css">
+  <link rel="stylesheet" type="text/css" href="/css/videoStyle.css">
+  <link rel="stylesheet" type="text/css" href="/css/checkBoxStyle.css">
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+</head>
+<body style="font-family: sans-serif;">
+<div class="header">
+  <div class="navbar">
+    <ul>
+      <li><a href="home.html">Home</a></li>
+      <li id="videoNav"><a>Video</a>
+        <ul>
+          <li><a href="camera.html">camera</a></li>
+          <li><a href="screen.html">record</a></li>
+        </ul>
+      </li>
+      <li id="edit"><a>Editing</a>
+        <ul>
+          <li><a href="mainEdit.html">mainEdit</a></li>
+          <li><a href="photo.html">photo</a></li>
+        </ul>
+      </li>
+      <li id="upload"><a href="upload.html">Upload</a></li>
+      <li id="about"><a href="aboutUs.html">About us</a>
+      </li>
+    </ul>
+  </div>
+</div>
+<div class="container">
+  <h1>Magic Camera Capture</h1>
+  <div class="option">
+    <div style="width: 50%; height: 100%">
+      <i class="fa fa-camera" aria-hidden="true"></i>
+      <a id="camera" href="camera.html" style="text-decoration: none; display: inline-block; height: inherit; width: inherit;">camera</a>
+    </div>
+    <div style="width: 50%; height: 100%; background: linear-gradient(to right,#f09819,#ff5858); border-radius: 50px;">
+      <i class="fa fa-laptop" aria-hidden="true"></i>
+      <a id="screen" href="screen.html" style="text-decoration: none; display: inline-block; height: inherit; width: inherit;">record</a>
+    </div>
+  </div>
+  <video id="video" autoplay="autoplay"></video>
+  <div class="control">
+    <button id="record" onclick="screen()">
+      <i class="fa fa-play" aria-hidden="true"></i>
+      Start
+    </button>
+    <button id="stop" style="display: none" onclick="stop()">
+      <i class="fa fa-stop" aria-hidden="true"></i>
+      Stop
+    </button>
+    <button disabled="disabled" id="download" onclick="downloadVideo()">
+      <i class="fa fa-download" aria-hidden="true"></i>
+      Download
+    </button>
+  </div>
+  <script>
+    "use strict";
+    const video = document.getElementById('video')
+    const downloadBtn = document.getElementById('download')
+    const recordBtn = document.getElementById('record')
+    const stopBtn = document.getElementById('stop')
+    let recorder
+
+    async function screen() {
+      const displayMediaOptions = {
+        video: true,
+        cursor: 'always',
+        // audio: true
+      }
+      // 开始录屏
+      let captureStream
+
+      try{
+        captureStream = await navigator.mediaDevices.getDisplayMedia(displayMediaOptions)
+      }catch(e){
+        // 取消录屏或者报错
+        alert("Could not get stream")
+        return
+      }
+
+      downloadBtn.disabled = true
+      recordBtn.style = 'display: none'
+      stopBtn.style = 'display: inline'
+
+      // 删除之前的 Blob
+      window.URL.revokeObjectURL(video.src)
+
+      video.autoplay = true
+
+      // 实时的播放录屏
+      video.srcObject = captureStream
+
+      // new 一个媒体记录
+      recorder = new MediaRecorder(captureStream)
+      recorder.start()
+
+      captureStream.getVideoTracks()[0].onended = () => {
+        // 录屏结束完成
+        recorder.stop()
+      }
+
+      recorder.addEventListener("dataavailable", event => {
+        // 录屏结束，并且数据可用
+        console.log("dataavailable------------")
+        let videoUrl = URL.createObjectURL(event.data, {type: 'video/webm'})
+
+        video.srcObject = null
+        video.src = videoUrl
+        video.autoplay = false
+
+        downloadBtn.disabled = false
+        recordBtn.style = 'display: inline'
+        stopBtn.style = 'display: none'
+      })
+    }
+
+    function stop(){
+      video.controls = true;
+      let tracks = video.srcObject.getTracks()
+      tracks.forEach(track => track.stop())
+      recorder.stop()
+    }
+
+    function downloadVideo() {
+      const url = video.src;
+      const name = new Date().toISOString().slice(0, 19).replace('T',' ').replace(" ","_").replace(/:/g,"-")
+      const a = document.createElement('a')
+
+      a.style = 'display: none'
+      a.download = `${name}.webm`
+      a.href = url
+
+      document.body.appendChild(a)
+
+      a.click()
+    }
+  </script>
+</div>
+</body>
+</html>

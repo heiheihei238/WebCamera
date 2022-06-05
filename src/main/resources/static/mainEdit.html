@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>camera</title>
+  <!--    <iframe sandbox="allow-forms allow-same-origin allow-scripts"></iframe>-->
+  <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  <link rel="stylesheet" type="text/css" href="/css/navigationStyle.css">
+  <link rel="stylesheet" type="text/css" href="/css/editStyle.css">
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+</head>
+
+<body style="font-family: sans-serif;">
+<div class="header">
+  <div class="navbar">
+    <ul>
+      <li><a href="home.html">Home</a></li>
+      <li id="videoNav"><a>Video</a>
+        <ul>
+          <li><a href="camera.html">camera</a></li>
+          <li><a href="screen.html">record</a></li>
+        </ul>
+      </li>
+      <li id="edit"><a>Editing</a>
+        <ul>
+          <li><a href="mainEdit.html">mainEdit</a></li>
+          <li><a href="photo.html">photo</a></li>
+        </ul>
+      </li>
+      <li id="upload"><a href="upload.html">Upload</a></li>
+      <li id="about"><a href="aboutUs.html">About us</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div class="container">
+  <h1>Magic Camera Capture</h1>
+  <div class="main">
+    <div class="rebild">
+      <canvas id="canvas" width="250" height="250"></canvas>
+      <video id="video"></video>
+    </div>
+    <div class="main-right">
+      <div class="showVideo">
+        <video id="video1" autoplay="autoplay" controls></video>
+        <div class="command">
+          <a href="javascript:;" class="file2">
+            <i class="fa fa-upload" aria-hidden="true"></i>
+            choose file
+            <input type="file" id="file" onchange="playMedia2()">
+          </a>
+          <div>
+            <button class="file2" disabled="disabled" id="download" onclick="downloadVideo()">
+              <i class="fa fa-download" aria-hidden="true"></i>
+              download
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="toolBox" style="transition:all 0.2s linear 0s">
+        <button onclick="startCanvas()">Canvas</button>
+        <button onclick="addSubtitle()">Subtitle</button>
+        <button id="capture" onclick="capture()">Recording</button>
+        <button onclick="stop()">Stop record</button>
+      </div>
+      <div class="moreOption" style="margin-right: 30px">
+        <h2>Speed</h2>
+        <button onclick="speedUp(1)">1X</button>
+        <button onclick="speedUp(1.5)">1.5X</button>
+        <button onclick="speedUp(2)">2X</button>
+        <button onclick="speedUp(2.5)">2.5X</button>
+        <button onclick="speedUp(3)">3X</button>
+      </div>
+
+      <div class="moreOption">
+        <h2>Mode</h2>
+        <button onclick="blackAndWhite()">Black and white mode</button>
+        <button onclick="negativeMode()">Negative mode</button>
+        <button onclick="reliefMode()">Relief mode</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  "use strict";
+  let myVid = document.getElementById("video1");
+  myVid.addEventListener("timeupdate", timeupdate);
+  let canvas = document.getElementById("canvas");
+  let subtitleparam = 0;
+  let scrollText = "Group work";
+  let obSubtitle = false;
+  let download = document.getElementById("download");
+  let videoElt = document.getElementById('video');
+  let recorder;
+
+  let _endTime;
+
+  // //视频播放
+  // function playMedia(startTime, endTime) {
+  //   //设置结束时间
+  //   _endTime = endTime;
+  //   var file = document.getElementById("file").files[0];
+  //   if (!file) {
+  //     alert("请指定视频路径");
+  //     return false;
+  //   }
+  //   var url = (window.URL) ? window.URL.createObjectURL(file) : window.webkitURL.createObjectURL(file);
+  //   myVid.src = url;
+  //   myVid.controls = true;
+  //   setTimeout("setCurrentTime('" + startTime + "')", 200);
+  // }
+
+  //视频播放
+  function playMedia2() {
+    //设置结束时间
+    let file = document.getElementById("file").files[0];
+    if (!file) {
+      alert("Please specify the video path");
+      return false;
+    }
+    myVid.src = (window.URL) ? window.URL.createObjectURL(file) : window.webkitURL.createObjectURL(file);
+    myVid.controls = true;
+  }
+
+  function timeupdate() {
+    //因为当前的格式是带毫秒的float类型的如：12.231233，所以把他转成String了便于后面分割取秒
+    let time = myVid.currentTime + "";
+    document.getElementById("showTime").value = time;
+    let ts = time.substring(0, time.indexOf("."));
+    if (ts == _endTime) {
+      myVid.pause();
+    }
+  }
+
+  function speedUp(rate) {
+    myVid = (myVid.playbackRate = rate);
+  }
+
+  function startCanvas() {
+    let ctx = canvas.getContext("2d");
+    ctx.drawImage(myVid,0,0,250,250);
+    obSubtitle = false;
+  }
+
+  function addSubtitle() {
+    let ctx = canvas.getContext("2d");
+    ctx.drawImage(myVid,0,0,250,250);
+    ctx.font = '20px sans-serif';
+    ctx.fillStyle = "#ffffff";
+    ctx.fillText(scrollText, subtitleparam, 200);
+    subtitleparam -= 1;
+    if(subtitleparam < -150) {
+      subtitleparam *= -1;
+    }
+    obSubtitle = true;
+    window.requestAnimationFrame(addSubtitle);
+  }
+
+  function blackAndWhite() {
+    let ctx = canvas.getContext("2d");
+    ctx.drawImage(myVid,0,0,250,250);
+    if(obSubtitle == true) {
+      ctx.font = '20px sans-serif';
+      ctx.fillStyle = "#ffffff";
+      ctx.fillText(scrollText, subtitleparam, 200);
+      subtitleparam -= 1;
+      if(subtitleparam < -150) {
+        subtitleparam *= -1;
+      }
+    }
+    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    const data = imageData.data;
+
+    for (let i = 0; i < data.length; i += 4) {
+      const average = (data[i] + data[i + 1] + data[i + 2]) / 3;
+      data[i] = average;
+      data[i + 1] = average;
+      data[i + 2] = average;
+    }
+    ctx.putImageData(imageData, 0, 0);
+    window.requestAnimationFrame(blackAndWhite);
+  }
+
+  function negativeMode() {
+    let ctx = canvas.getContext("2d");
+    ctx.drawImage(myVid,0,0,250,250);
+    if(obSubtitle == true) {
+      ctx.font = '20px sans-serif';
+      ctx.fillStyle = "#ffffff";
+      ctx.fillText(scrollText, subtitleparam, 200);
+      subtitleparam -= 1;
+      if(subtitleparam < -150) {
+        subtitleparam *= -1;
+      }
+    }
+    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    const data = imageData.data;
+
+    for (let i = 0; i < data.length; i += 4) {
+      data[i] = 255 - data[i];
+      data[i + 1] = 255 - data[i + 1];
+      data[i + 2] = 255 - data[i + 2];
+    }
+    ctx.putImageData(imageData, 0, 0);
+    window.requestAnimationFrame(negativeMode);
+  }
+
+  function reliefMode() {
+    let ctx = canvas.getContext("2d");
+    ctx.drawImage(myVid,0,0,250,250);
+    if(obSubtitle == true) {
+      ctx.font = '20px sans-serif';
+      ctx.fillStyle = "#ffffff";
+      ctx.fillText(scrollText, subtitleparam, 200);
+      subtitleparam -= 1;
+      if(subtitleparam < -150) {
+        subtitleparam *= -1;
+      }
+    }
+    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    const data = imageData.data;
+
+    for (let i = 0; i < data.length; i += 4) {
+      data[i] = 255 / 2 + 2 * data[i] - data[i + 4] - data[i + 250 * 4];
+    }
+    ctx.putImageData(imageData, 0, 0);
+    window.requestAnimationFrame(reliefMode);
+  }
+
+  async function capture() {
+    let ctx = canvas;
+    let stream = ctx.captureStream(25);
+    console.log(stream);
+    videoElt.srcObject = stream;
+    download.disabled = true;
+    videoElt.autoplay = true;
+    recorder = new MediaRecorder(stream);
+    recorder.start();
+    stream.getVideoTracks()[0].onended = () => {
+      recorder.stop()
+    }
+    recorder.addEventListener("dataavailable", event => {
+      // 录屏结束，并且数据可用
+      console.log("dataavailable------------")
+      let videoUrl = URL.createObjectURL(event.data, {type: 'video/webm'})
+
+      videoElt.srcObject = null
+      videoElt.src = videoUrl
+      videoElt.autoplay = false
+
+      download.disabled = false
+      recordBtn.style = 'display: inline'
+      stopBtn.style = 'display: none'
+    })
+  }
+
+  function stop() {
+    if (videoElt.srcObject == null) {
+      alert("You need to start record first");
+    }
+    videoElt.controls = true;
+    let tracks = videoElt.srcObject.getTracks()
+    tracks.forEach(track => track.stop())
+    recorder.stop()
+  }
+
+  function downloadVideo() {
+    if(videoElt.src == null) {
+      alert("There is no file hier.");
+    }
+    const url = videoElt.src;
+    const name = new Date().toISOString().slice(0, 19).replace('T',' ').replace(" ","_").replace(/:/g,"-")
+    const a = document.createElement('a')
+
+    a.style = 'display: none';
+    a.download = `${name}.webm`;
+    a.href = url;
+
+    document.body.appendChild(a)
+
+    a.click()
+  }
+</script>
+</body>
+</html>

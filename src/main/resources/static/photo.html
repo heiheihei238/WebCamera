@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Photo</title>
+  <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  <link rel="stylesheet" type="text/css" href="/css/navigationStyle.css">
+  <link rel="stylesheet" type="text/css" href="/css/photoStyle.css">
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+</head>
+
+<body style="font-family: sans-serif;">
+<div class="header">
+  <div class="navbar">
+    <ul>
+      <li><a href="home.html">Home</a></li>
+      <li id="videoNav"><a>Video</a>
+        <ul>
+          <li><a href="camera.html">camera</a></li>
+          <li><a href="screen.html">record</a></li>
+        </ul>
+      </li>
+      <li id="edit"><a>Editing</a>
+        <ul>
+          <li><a href="mainEdit.html">mainEdit</a></li>
+          <li><a href="photo.html">photo</a></li>
+        </ul>
+      </li>
+      <li id="upload"><a href="upload.html">Upload</a></li>
+      <li id="about"><a href="aboutUs.html">About us</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div class="container">
+  <h1>Magic Camera Capture</h1>
+  <div class="main">
+    <div class="photos" id="photos">
+      <canvas id="photo0" width="400" height="400"></canvas>
+    </div>
+    <div class="video">
+      <video id="video1" autoplay="autoplay" controls></video>
+      <div class="command">
+        <a href="javascript:;" class="file2" style="margin-right: 20px">
+          <i class="fa fa-upload" aria-hidden="true"></i>
+          choose file
+          <input type="file" id="file" onchange="playMedia2()">
+        </a>
+        <div>
+          <button style="margin-right: 20px" class="file2" onclick="picture()">
+            <i class="fa fa-picture-o" aria-hidden="true"></i>
+            Screenshot
+          </button>
+          <button class="file2" disabled="disabled" id="download" onclick="downloadPhoto()">
+            <i class="fa fa-download" aria-hidden="true"></i>
+            Download
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+
+<script>
+    "use strict";
+    let myVid = document.getElementById("video1");
+    myVid.addEventListener("timeupdate", timeupdate);
+
+    let _endTime;
+
+    //视频播放
+    function playMedia2() {
+        //设置结束时间
+        let file = document.getElementById("file").files[0];
+        if (!file) {
+            alert("Please specify the video path");
+            return false;
+        }
+        myVid.src = (window.URL) ? window.URL.createObjectURL(file) : window.webkitURL.createObjectURL(file);
+        myVid.controls = true;
+    }
+
+    function timeupdate() {
+        //因为当前的格式是带毫秒的float类型的如：12.231233，所以把他转成String了便于后面分割取秒
+        var time = myVid.currentTime + "";
+        document.getElementById("showTime").value = time;
+        var ts = time.substring(0, time.indexOf("."));
+        if (ts == _endTime) {
+            myVid.pause();
+        }
+    }
+
+    let photoNumber = 0;
+
+    function picture() {
+        if (myVid.src == "") {
+            alert("Please import the video first");
+        } else if (photoNumber == 0) {
+            let canvas = document.getElementById('photo0');
+            let ctx = canvas.getContext("2d");
+            ctx.drawImage(myVid, 0, 0, 400, 400) //截取video视频流中的图片
+            let download = document.getElementById("download");
+            download.disabled = false;
+            photoNumber += 1;
+        } else if (photoNumber > 8) {
+            alert("You can take up to nine screenshots, you have reached your limit!")
+        } else {
+            let parents = document.getElementById("photos");
+            let child = document.createElement("canvas");
+            let newId = "photo" + photoNumber;
+            child.id = newId;
+            child.width = 400;
+            child.height = 400;
+            parents.appendChild(child);
+            let canvas = document.getElementById(newId);
+            let ctx = canvas.getContext("2d");
+            ctx.drawImage(myVid, 0, 0, 400, 400); //截取video视频流中的图片
+            photoNumber += 1;
+        }
+    }
+
+    function downloadPhoto() {
+        let canvas = document.querySelectorAll("canvas");
+        for (let position = 0; canvas.length > position; position += 1) {
+            if (canvas == null) {
+                alert("canvas is null; photoNumber is " + photoNumber);
+            }
+            let MIME_TYPE = "image/png";
+            let ref = canvas[position].toDataURL(MIME_TYPE);
+            let dlLink = document.createElement('a');
+            dlLink.download = new Date().toISOString().slice(0, 19).replace('T', ' ').replace(" ", "_").replace(/:/g, "-");
+            dlLink.href = ref;
+            dlLink.dataset.downloadurl = [MIME_TYPE, dlLink.download, dlLink.href].join(':');
+            document.body.appendChild(dlLink);
+            dlLink.click();
+            document.body.removeChild(dlLink);
+        }
+    }
+</script>
+</html>
